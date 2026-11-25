@@ -1,0 +1,29 @@
+# .pre-commit-config.yaml
+# Hook local de pre-commit para revisar ortografía en archivos Markdown de los posts del blog.
+# Se ejecuta automáticamente en cada `git commit` y bloquea si hay errores.
+# Usa cspell (Node.js) con diccionario español local (.cspell-dicts/Spanish.trie.gz) y diccionario técnico personalizado.
+# Revisa SOLO archivos en src/content/blog/ (posts del blog).
+
+repos:
+  - repo: local
+    hooks:
+      - id: cspell-blog-posts
+        name: cspell (Blog posts - español)
+        description: Revisa ortografía en archivos .md staged dentro de src/content/blog/
+        entry: cspell
+        language: node
+        types: [markdown]
+        # Solo revisa archivos .md dentro de src/content/blog/
+        files: ^src/content/blog/.*\.(md|mdx)$
+        # Pasa solo los archivos staged a la herramienta
+        args:
+          - --config
+          - .cspell.json
+          - --no-progress
+          - --no-summary
+          - --show-suggestions
+        # Solo cspell como dependencia (el diccionario es archivo local)
+        additional_dependencies:
+          - cspell@latest
+        # Verbose para ver qué archivos se revisan
+        verbose: true

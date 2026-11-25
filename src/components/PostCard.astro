@@ -1,0 +1,155 @@
+---
+interface Props {
+  post: {
+    id: string;
+    slug: string;
+    data: {
+      title: string;
+      description?: string;
+      pubDate: Date;
+      updatedDate?: Date;
+      author: string;
+      tags: string[];
+    };
+  };
+}
+
+const { post } = Astro.props;
+const { id, data } = post;
+const baseUrl = import.meta.env.BASE_URL;
+const postUrl = `${baseUrl}/blog/${id}/`;
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+const pubDate = formatDate(data.pubDate);
+const updatedDate = data.updatedDate ? formatDate(data.updatedDate) : pubDate;
+const hasUpdate = data.updatedDate && data.updatedDate.getTime() !== data.pubDate.getTime();
+---
+
+<article class="post-card">
+  <header class="post-card-header">
+    <h2 class="post-card-title">
+      <a href={postUrl} class="post-link">{data.title}</a>
+    </h2>
+    <div class="post-card-meta">
+      <time datetime={data.pubDate.toISOString()} class="post-date">
+        Publicado: {pubDate}
+      </time>
+      {hasUpdate && (
+        <time datetime={data.updatedDate!.toISOString()} class="post-date post-updated">
+          Actualizado: {updatedDate}
+        </time>
+      )}
+      <span class="post-author">Por {data.author}</span>
+    </div>
+  </header>
+
+  {data.description && (
+    <p class="post-card-excerpt">{data.description}</p>
+  )}
+
+  {data.tags.length > 0 && (
+    <footer class="post-card-tags">
+      {data.tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
+    </footer>
+  )}
+</article>
+
+<style>
+  .post-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background-color: var(--color-bg-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  [data-theme="dark"] .post-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .post-card-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .post-card-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
+  }
+
+  .post-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-link:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .post-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .post-date::before {
+    content: '';
+  }
+
+  .post-updated::before {
+    content: '';
+  }
+
+  .post-author::before {
+    content: '';
+  }
+
+  .post-card-excerpt {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .post-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .post-card {
+      padding: 1.25rem;
+    }
+
+    .post-card-title {
+      font-size: 1.25rem;
+    }
+
+    .post-card-meta {
+      gap: 0.75rem;
+      font-size: 0.8125rem;
+    }
+  }
+</style>

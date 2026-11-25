@@ -1,0 +1,340 @@
+# .spellcheckerrc.yaml
+# Configuración de spellchecker-cli para el proyecto TheCodePapers.
+# Define idioma, diccionario personalizado y reglas de ignorado para frontmatter de Astro.
+
+# Idioma principal: español
+language: es
+
+# Diccionario personalizado con términos técnicos, marcas, nombres propios, etc.
+# Estas palabras NO se marcarán como errores.
+dictionary:
+  # Frameworks / Herramientas / Tecnologías
+  - Astro
+  - Markdown
+  - TypeScript
+  - JavaScript
+  - Node.js
+  - npm
+  - pnpm
+  - Vite
+  - Tailwind
+  - GitHub
+  - GitHub Pages
+  - Git
+  - CI
+  - CD
+  - RSS
+  - SEO
+  - HTML
+  - CSS
+  - SVG
+  - PNG
+  - JPEG
+  - WebP
+  - API
+  - CLI
+  - UI
+  - UX
+  - JSON
+  - YAML
+  - TOML
+  - ESLint
+  - Prettier
+  - Husky
+  - VSCode
+  - Visual Studio Code
+  - WebAssembly
+  - WASM
+  - Rust
+  - Go
+  - Python
+  - Docker
+  - Kubernetes
+  - Linux
+  - macOS
+  - Windows
+  - OpenSource
+  - Open Source
+  - FOSS
+  - MIT
+  - GPL
+  - Apache
+  - BSD
+  # Nombres propios / Marcas
+  - Andy
+  - García
+  - Fonticoba
+  - TheCodePapers
+  - CodePapers
+  - Montserrat
+  - Noto
+  - Sans
+  - Mono
+  - FontAwesome
+  - ColorHunt
+  - LightMode
+  - DarkMode
+  # Términos técnicos comunes en posts
+  - frontend
+  - backend
+  - fullstack
+  - middleware
+  - websocket
+  - websockets
+  - async
+  - await
+  - promise
+  - promises
+  - callback
+  - callbacks
+  - closure
+  - hoisting
+  - prototype
+  - polimorfismo
+  - herencia
+  - encapsulamiento
+  - inyección
+  - dependencias
+  - testing
+  - unittest
+  - integration
+  - e2e
+  - mock
+  - stub
+  - spy
+  - coverage
+  - linting
+  - formatting
+  - bundling
+  - transpiling
+  - polyfill
+  - shim
+  - tree-shaking
+  - codesplitting
+  - lazy-loading
+  - SSR
+  - SSG
+  - CSR
+  - SPA
+  - PWA
+  - JAMstack
+  - headless
+  - CMS
+  - static-site
+  - static-site-generation
+  - build-time
+  - runtime
+  - compile-time
+  - devtools
+  - debugger
+  - profiler
+  - benchmark
+  - performance
+  - accessibility
+  - a11y
+  - i18n
+  - l10n
+  - responsive
+  - mobile-first
+  - desktop-first
+  - breakpoint
+  - media-query
+  - flexbox
+  - grid
+  - container-query
+  - custom-properties
+  - css-variables
+  - design-system
+  - component-library
+  - storybook
+  - chromatic
+  - visual-regression
+  - snapshot-testing
+  - playwright
+  - cypress
+  - jest
+  - vitest
+  - mocha
+  - chai
+  - sinon
+  - testing-library
+  - react-testing-library
+  - msw
+  - mock-service-worker
+  - graphql
+  - rest
+  - restful
+  - websocket
+  - server-sent-events
+  - sse
+  - crud
+  - orm
+  - prisma
+  - drizzle
+  - sql
+  - nosql
+  - mongodb
+  - postgresql
+  - mysql
+  - sqlite
+  - redis
+  - memcached
+  - rabbitmq
+  - kafka
+  - nats
+  - grpc
+  - protobuf
+  - openapi
+  - swagger
+  - zod
+  - valibot
+  - arktype
+  - typescript-eslint
+  - eslint-plugin
+  - prettier-plugin
+  - stylelint
+  - commitlint
+  - conventional-commits
+  - semantic-release
+  - changelog
+  - versioning
+  - semver
+  - dependabot
+  - renovate
+  - github-actions
+  - workflow
+  - job
+  - step
+  - runner
+  - artifact
+  - cache
+  - matrix
+  - strategy
+  - fail-fast
+  - continue-on-error
+  - timeout
+  - permissions
+  - secrets
+  - environments
+  - deployment
+  - staging
+  - production
+  - rollback
+  - blue-green
+  - canary
+  - feature-flag
+  - toggle
+  - ab-testing
+  - feature-branch
+  - trunk-based
+  - gitflow
+  - github-flow
+  - gitlab-flow
+  - monorepo
+  - polyrepo
+  - workspace
+  - turbo
+  - nx
+  - lerna
+  - changesets
+  - release-plz
+  - cargo
+  - crates.io
+  - npmjs
+  - jsdelivr
+  - unpkg
+  - cdn
+  - edge
+  - cloudflare
+  - vercel
+  - netlify
+  - railway
+  - render
+  - fly.io
+  - heroku
+  - aws
+  - gcp
+  - azure
+  - digitalocean
+  - linode
+  - vultr
+  - hetzner
+  - ovh
+  - scaleway
+  # Palabras en inglés común en posts técnicos
+  - setup
+  - config
+  - configs
+  - debug
+  - deploy
+  - deployed
+  - deploying
+  - install
+  - installed
+  - installing
+  - update
+  - updated
+  - updating
+  - upgrade
+  - upgraded
+  - upgrading
+  - build
+  - built
+  - building
+  - run
+  - running
+  - test
+  - tested
+  - testing
+  - lint
+  - linted
+  - linting
+  - format
+  - formatted
+  - formatting
+  - refactor
+  - refactored
+  - refactoring
+  - optimize
+  - optimized
+  - optimizing
+  - migrate
+  - migrated
+  - migrating
+  - deprecated
+  - legacy
+  - modern
+  - modernize
+  - modernized
+  - modernizing
+
+# Ignorar frontmatter de Astro (todo lo que está entre ---)
+# spellchecker-cli usa regex para ignorar bloques
+ignore:
+  # Patrón para ignorar frontmatter YAML completo
+  - pattern: '^---[\s\S]*?^---'
+    flags: 'gm'
+  # Ignorar bloques de código (fenced code blocks)
+  - pattern: '^```[\s\S]*?^```'
+    flags: 'gm'
+  # Ignorar código inline
+  - pattern: '`[^`]+`'
+  # Ignorar URLs
+  - pattern: 'https?://[^\s]+'
+  # Ignorar rutas de archivos
+  - pattern: '(?:src|public|dist|node_modules)/[^\s]+'
+  # Ignorar etiquetas HTML
+  - pattern: '<[^>]+>'
+  # Ignorar referencias estilo markdown [texto](url)
+  - pattern: '\[([^\]]+)\]\([^)]+\)'
+    # Solo ignorar la URL, no el texto
+  # Ignorar imágenes markdown ![alt](url)
+  - pattern: '!\[([^\]]*)\]\([^)]+\)'
+
+# Configuración adicional
+# report: solo muestra errores, no warnings
+reporter: default
+# No sugerir correcciones automáticas (solo reportar)
+suggest: false
+# Color en salida
+color: true

@@ -1,0 +1,56 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<header class="site-header" transition:animate=id>
+  <a href={baseUrl} class="site-title" aria-label="TheCodePapers - Inicio">
+    TheCodePapers
+  </a>
+  <nav class="site-nav" aria-label="Navegación principal">
+    <ThemeToggle />
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .site-title:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .site-header {
+      padding: 0.75rem 1rem;
+    }
+
+    .site-title {
+      font-size: 1.25rem;
+    }
+  }
+</style>

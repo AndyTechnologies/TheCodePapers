@@ -1,0 +1,191 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  author: string;
+  tags: string[];
+}
+
+const { title, description, pubDate, updatedDate, author, tags } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+const formattedPubDate = formatDate(pubDate);
+const formattedUpdatedDate = updatedDate ? formatDate(updatedDate) : formattedPubDate;
+const hasUpdate = updatedDate && updatedDate.getTime() !== pubDate.getTime();
+
+// SEO props for BaseLayout
+const publishedTime = pubDate.toISOString();
+const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOString();
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  author={author}
+  tags={tags}
+>
+  <Header />
+  <main id="main-content" class="blog-post-main" transition:animate="fade">
+    <article class="blog-post">
+      <header class="blog-post-header">
+        <h1 class="blog-post-title">{title}</h1>
+        <div class="blog-post-meta">
+          <time datetime={pubDate.toISOString()} class="post-date">
+            Publicado: {formattedPubDate}
+          </time>
+          {hasUpdate && (
+            <time datetime={updatedDate!.toISOString()} class="post-date post-updated">
+              Actualizado: {formattedUpdatedDate}
+            </time>
+          )}
+          <span class="post-author">Por {author}</span>
+        </div>
+        {tags.length > 0 && (
+          <div class="blog-post-tags">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+      <div class="blog-post-content">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-post-main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .blog-post {
+    background-color: var(--color-bg-primary);
+  }
+
+  .blog-post-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .blog-post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .blog-post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .blog-post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .blog-post-content {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .blog-post-content h2 {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .blog-post-content h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .blog-post-content h3 {
+    margin-top: 2.5rem;
+  }
+
+  .blog-post-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-post-content ul,
+  .blog-post-content ol {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-post-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-post-content blockquote {
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .blog-post-content pre {
+    margin: 2rem 0;
+  }
+
+  .blog-post-content code {
+    font-size: 0.9em;
+  }
+
+  .blog-post-content hr {
+    margin: 3rem 0;
+  }
+
+  .blog-post-content img {
+    margin: 2rem 0;
+  }
+
+  .blog-post-content table {
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .blog-post-main {
+      padding: 2rem 1rem;
+    }
+
+    .blog-post-title {
+      font-size: 1.875rem;
+    }
+
+    .blog-post-meta {
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .blog-post-content {
+      font-size: 1rem;
+    }
+  }
+</style>

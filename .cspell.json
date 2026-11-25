@@ -1,0 +1,74 @@
+{
+  // .cspell.json
+  // Configuración de cspell para TheCodePapers.
+  // Usa diccionario español local (.cspell-dicts/Spanish.trie.gz) + palabras personalizadas del proyecto.
+  // Revisa SOLO archivos en src/content/blog/ (posts del blog).
+
+  "version": "0.2",
+  "language": "es",
+  "dictionaries": [
+    "spanish-local",
+    "project-words"
+  ],
+  "languageSettings": [
+    {
+      "languageId": "markdown",
+      "locale": "es",
+      "dictionaries": [
+        "spanish-local",
+        "project-words"
+      ],
+      "ignoreRegExpList": [
+        "frontmatter",
+        "code-blocks",
+        "inline-code",
+        "urls",
+        "file-paths",
+        "html-tags",
+        "markdown-links",
+        "markdown-images"
+      ]
+    }
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "spanish-local",
+      "path": "./.cspell-dicts/Spanish.trie.gz",
+      "description": "Spanish Dictionary (Spain) - local copy"
+    },
+    {
+      "name": "project-words",
+      "path": "./.cspell-project-words.txt",
+      "addWords": true
+    }
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    ".astro",
+    ".git",
+    "*.min.js",
+    "*.min.css",
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "LICENSE.md",
+    "CODE_OF_CONDUCT.md",
+    ".cspell-dicts"
+  ],
+  "overrides": [
+    {
+      "filename": "src/content/blog/**/*.md",
+      "locale": "es",
+      "dictionaries": [
+        "spanish-local",
+        "project-words"
+      ]
+    }
+  ],
+  "reporters": [
+    "default"
+  ]
+}

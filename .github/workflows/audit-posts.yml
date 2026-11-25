@@ -1,0 +1,103 @@
+# .github/workflows/audit-posts.yml
+# Workflow de auditoría ortográfica y gramatical para posts del blog.
+# Se ejecuta en push a main y en pull_request hacia main.
+# Dos jobs secuenciales: ortografía (spellcheck) y gramática (LanguageTool).
+# Si AMBOS pasan y es push a main, invoca el workflow de deploy (workflow_call).
+
+name: Audit Posts (Ortografía + Gramática)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Permisos mínimos necesarios
+permissions:
+  contents: read
+  pull-requests: write  # Para que reviewdog pueda crear anotaciones en PR
+  checks: write         # Para reportar resultados como checks
+
+jobs:
+  # ------------------------------------------------------------
+  # PASO A – Ortografía con rojopolis/spellcheck-github-actions
+  # ------------------------------------------------------------
+  ortografia:
+    name: Ortografía (spellcheck)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Spellcheck Markdown posts
+        uses: rojopolis/spellcheck-github-actions@v0
+        with:
+          # Archivo de configuración en la raíz del repo
+          config_file: .spellcheck.yml
+          # Directorio de trabajo (raíz del repo)
+          working_directory: .
+          # Solo falla si hay errores (no warnings)
+          fail_on_error: true
+          # Reporter: github-pr-review para anotaciones en PR
+          reporter: github-pr-review
+
+  # ------------------------------------------------------------
+  # PASO B – Gramática y estilo con reviewdog/action-languagetool
+  # ------------------------------------------------------------
+  gramatica:
+    name: Gramática y estilo (LanguageTool)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run LanguageTool on Markdown posts
+        uses: reviewdog/action-languagetool@v1
+        with:
+          # Idioma: español
+          language: es
+          # Patrones de archivos a analizar (posts del blog en Astro)
+          patterns: "src/content/blog/**/*.md"
+          # Reporter: github-pr-check muestra anotaciones en la pestaña Checks del PR
+          reporter: github-pr-check
+          # Nivel de severidad a reportar: error, warning, info
+          level: error
+          # Fallar el job si hay errores (que no continúe al deploy)
+          fail_on_error: true
+          # Configuración adicional de LanguageTool
+          # Desactivamos reglas que generan falsos positivos en contenido técnico
+          args: >
+            --disable WHITESPACE_RULE
+            --disable UPPERCASE_SENTENCE_START
+            --disable EN_QUOTES
+            --disable EN_UNPAIRED_BRACKETS
+            --disable EN_A_VS_AN
+
+  # ------------------------------------------------------------
+  # Invocar workflow de Deploy (solo si ambos chequeos pasan Y es push a main)
+  # ------------------------------------------------------------
+  trigger-deploy:
+    name: Trigger Deploy Workflow
+    needs: [ortografia, gramatica]  # Gate obligatorio: ambos deben pasar
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Trigger deploy workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: workflow } = await github.rest.actions.getWorkflowByName({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Deploy to GitHub Pages'
+            });
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: workflow.id,
+              ref: 'main'
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

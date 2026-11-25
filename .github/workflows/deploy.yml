@@ -1,12 +1,14 @@
+# .github/workflows/deploy.yml
+# Workflow de despliegue a GitHub Pages.
+# Diseñado para ser invocado SOLO después de que pasen las auditorías
+# (workflow_call desde audit-posts.yml).
+# También se puede disparar manualmente (workflow_dispatch).
+
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
-  push:
-    branches: [main]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
-  workflow_dispatch:
+  workflow_call:  # Permite ser llamado desde audit-posts.yml después de checks
+  workflow_dispatch:  # Permite ejecución manual desde Actions tab
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -28,10 +30,10 @@ jobs:
       - name: Install, build, and upload your site output
         uses: withastro/action@fc88a7002f0c62327f26fb1b15f2a1d581249278 # v5.1.0
         # with:
-            # path: . # The root location of your Astro project inside the repository. (optional)
-            # node-version: 22 # The specific version of Node that should be used to build your site. Defaults to 22. (optional)
-            # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-            # build-cmd: pnpm run build # The command to run to build your site. Runs the package build script/task by default. (optional)
+        #   path: .
+        #   node-version: 22
+        #   package-manager: pnpm@latest
+        #   build-cmd: pnpm run build
 
   deploy:
     needs: build

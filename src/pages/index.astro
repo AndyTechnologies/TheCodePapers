@@ -1,15 +1,84 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+import PostCard from '../components/PostCard.astro';
+
+const posts = await getCollection('blog', ({ data }) => {
+  return data.pubDate <= new Date();
+});
+
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="TheCodePapers" description="Blog personal minimalista sobre desarrollo, programación y tecnología.">
+  <Header />
+  <main id="main-content" class="blog-index-main" transition:animate="fade">
+    {posts.length > 0 ? (
+      <section class="blog-posts-list" aria-label="Publicaciones">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </section>
+    ) : (
+      <section class="blog-empty-state" aria-label="Sin publicaciones">
+        <p>No hay publicaciones todavía.</p>
+        <p class="empty-hint">Crea un archivo <code>.md</code> en <code>src/content/blog/</code> para empezar.</p>
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-index-main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .blog-posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .blog-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--color-text-secondary);
+  }
+
+  .blog-empty-state p {
+    margin-bottom: 1rem;
+  }
+
+  .empty-hint {
+    font-size: 0.9375rem;
+  }
+
+  .empty-hint code {
+    font-size: 0.875em;
+  }
+
+  @media (max-width: 640px) {
+    .blog-index-main {
+      padding: 2rem 1rem;
+    }
+
+    .blog-index-title {
+      font-size: 2.25rem;
+    }
+
+    .blog-index-description {
+      font-size: 1rem;
+    }
+
+    .blog-index-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+</style>

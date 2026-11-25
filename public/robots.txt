@@ -1,0 +1,5 @@
+# TheCodePapers - robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://andytechnologies.github.io/TheCodePapers/sitemap-index.xml

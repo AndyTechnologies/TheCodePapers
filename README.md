@@ -1,43 +1,134 @@
-# [Astro](https://astro.build) GitHub Pages Template
+# TheCodePapers
 
-## 🤖 Automatic Deployment to GitHub Pages
+Blog personal minimalista construido con **Astro 5** y **Markdown**, desplegado en GitHub Pages.
 
-This minimal Astro project template comes with a [GitHub Action](https://github.com/features/actions) that automatically deploys your site to [GitHub Pages](https://pages.github.com/).
+## Tecnologías
 
-For more information, please see our complete deployment guide—[Deploy your Astro Site to GitHub Pages](https://docs.astro.build/en/guides/deploy/github/).
+- [Astro 5](https://astro.build) — Framework web moderno para sitios estáticos
+- [TypeScript](https://www.typescriptlang.org) — Tipado estático
+- [Markdown](https://daringfireball.net/projects/markdown/) — Contenido de las publicaciones
+- GitHub Pages + GitHub Actions — Despliegue automático
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando | Acción |
+|---------|--------|
+| `npm install` | Instala dependencias |
+| `npm run dev` | Inicia servidor de desarrollo en `localhost:4321` |
+| `npm run build` | Genera build de producción en `./dist/` |
+| `npm run preview` | Previsualiza el build localmente |
+| `npm run astro ...` | Comandos CLI de Astro |
+
+## Estructura del proyecto
 
 ```text
 /
 ├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/      # Componentes reutilizables (Header, Footer, PostCard, ThemeToggle)
+│   ├── content/
+│   │   └── blog/        # Publicaciones en Markdown
+│   ├── layouts/         # Layouts base (BaseLayout, BlogPostLayout)
+│   ├── pages/           # Páginas y rutas
+│   │   ├── index.astro  # Listado de publicaciones
+│   │   └── blog/        # Rutas dinámicas de publicaciones
+│   │       └── [slug].astro
+│   ├── styles/          # Estilos globales CSS
+│   └── content.config.ts # Configuración de colecciones de contenido
+├── astro.config.mjs     # Configuración de Astro (site, base)
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Crear una nueva publicación
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Crea un archivo `.md` en `src/content/blog/`
+2. Añade el frontmatter requerido (ver esquema abajo)
+3. Escribe el contenido en Markdown
+4. El sitio se regenera automáticamente al hacer push a `main`
 
-Any static assets, like images, can be placed in the `public/` directory.
+### Esquema de frontmatter
 
-## 🧞 Commands
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `title` | `string` | Sí | Título de la publicación |
+| `description` | `string` | No | Descripción breve / extracto |
+| `pubDate` | `date` | Sí | Fecha de publicación (YYYY-MM-DD) |
+| `updatedDate` | `date` | No | Fecha de última modificación editorial |
+| `author` | `string` | Sí | Autor |
+| `tags` | `string[]` | No | Etiquetas (por defecto: `[]`) |
 
-All commands are run from the root of the project, from a terminal:
+**Notas:**
+- El `slug` de la URL se deriva automáticamente del nombre del archivo (sin la extensión `.md`)
+- Si no se proporciona `updatedDate`, se usa `pubDate` como fecha de última modificación
+- Las fechas deben usar formato ISO: `YYYY-MM-DD`
+- El contenido Markdown soporta: encabezados, párrafos, negritas, cursivas, listas, enlaces, imágenes, citas, bloques de código, código inline, tablas y separadores horizontales
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Plantilla de publicación
 
-## 👀 Want to learn more?
+```markdown
+---
+title: "Título de la publicación"
+description: "Breve descripción o extracto que aparecerá en el listado."
+pubDate: 2026-11-24
+updatedDate: 2026-11-24
+author: "Andy"
+tags:
+  - Development
+  - Programming
+  - Markdown
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Título de la publicación
+
+Contenido en Markdown...
+
+## Sección
+
+Más contenido...
+
+```typescript
+const code = "example";
+console.log(code);
+```
+```
+
+## Temas (Light / Dark Mode)
+
+- Detección automática de la preferencia del sistema (`prefers-color-scheme`)
+- Control manual visible en la cabecera
+- Preferencia guardada en `localStorage`
+- Sin destello de tema incorrecto al cargar (script inline en `<head>`)
+
+### Paleta Light Mode
+- Fondo: `#F9F7F7`
+- Superficies: `#DBE2EF`
+- Acentos/Enlaces: `#3F72AF`
+- Texto: `#112D4E`
+
+### Paleta Dark Mode
+- Fondo: `#071B2B`
+- Acentos/Detalles: `#167D8D`
+- Enlaces/Secundarios: `#B9E4E8`
+- Texto: `#EEEEEE`
+
+## Despliegue
+
+El sitio se despliega automáticamente en GitHub Pages al hacer push a la rama `main`.
+
+URL de producción: `https://andytechnologies.github.io/TheCodePapers/`
+
+El workflow (`.github/workflows/deploy.yml`) usa las acciones oficiales de Astro y GitHub Pages con versiones fijadas por SHA.
+
+## Configuración de Astro para GitHub Pages
+
+```js
+// astro.config.mjs
+export default defineConfig({
+  site: 'https://andytechnologies.github.io',
+  base: '/TheCodePapers',
+});
+```
+
+Todos los enlaces internos y recursos usan `import.meta.env.BASE_URL` para funcionar correctamente bajo el prefijo `/TheCodePapers/`.
