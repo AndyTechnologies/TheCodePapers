@@ -1,5 +1,8 @@
 ---
 import Footer from '../components/Footer.astro';
+import montserratWoff2 from '../assets/fonts/Montserrat-VariableFont_wght.ttf';
+import montserratItalicWoff2 from '../assets/fonts/Montserrat-Italic-VariableFont_wght.ttf';
+import notoSansMonoWoff2 from '../assets/fonts/NotoSansMono-VariableFont_wdth,wght.ttf';
 
 interface Props {
   title: string;
@@ -103,8 +106,9 @@ const jsonLd = {
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
     <link rel="alternate" type="application/rss+xml" title="TheCodePapers RSS Feed" href={`${baseUrl}/rss.xml`} />
-    <link rel="preload" as="font" crossorigin href={`${baseUrl}/_astro/Montserrat-VariableFont_wght.DcaoeaBt.ttf`} />
-    <link rel="preload" as="font" crossorigin href={`${baseUrl}/_astro/NotoSansMono-VariableFont_wdth_wght.CwK9lmmZ.ttf`} />
+    <link rel="preload" as="font" type="font/ttf" crossorigin href={montserratWoff2} />
+    <link rel="preload" as="font" type="font/ttf" crossorigin href={montserratItalicWoff2} />
+    <link rel="preload" as="font" type="font/ttf" crossorigin href={notoSansMonoWoff2} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="view-transition" content="same-origin" />
     <meta name="generator" content={Astro.generator} />
