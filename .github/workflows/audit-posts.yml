@@ -82,6 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: write  # Necesario para createWorkflowDispatch
     steps:
       - name: Trigger deploy workflow
         uses: actions/github-script@v7
