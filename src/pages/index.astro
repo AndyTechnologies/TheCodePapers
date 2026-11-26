@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
-
 import PostCard from '../components/PostCard.astro';
 
 const posts = await getCollection('blog', ({ data }) => {
@@ -14,13 +13,18 @@ posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 const baseUrl = import.meta.env.BASE_URL;
 ---
 
-<BaseLayout title="TheCodePapers" description="Blog personal minimalista sobre desarrollo, programación y tecnología.">
-  <Header />
-  <main id="main-content" class="blog-index-main" transition:animate="fade">
+<BaseLayout
+  title="TheCodePapers"
+  description="Blog personal minimalista sobre desarrollo, programación y tecnología. Tutoriales, mejores prácticas y arquitectura de software."
+>
+  <Header slot="header" />
+  <main id="main-content" class="blog-index-main" transition:animate="fade" role="feed" aria-label="Lista de publicaciones">
     {posts.length > 0 ? (
-      <section class="blog-posts-list" aria-label="Publicaciones">
+      <section class="blog-posts-list" aria-label="Publicaciones recientes">
         {posts.map((post) => (
-          <PostCard post={post} />
+          <article class="post-card-wrapper">
+            <PostCard post={post} />
+          </article>
         ))}
       </section>
     ) : (
@@ -34,29 +38,29 @@ const baseUrl = import.meta.env.BASE_URL;
 
 <style>
   .blog-index-main {
-    max-width: 880px;
+    max-width: var(--max-width-prose);
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: var(--space-2xl) var(--space-lg);
   }
 
   .blog-posts-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--space-lg);
   }
 
   .blog-empty-state {
     text-align: center;
-    padding: 4rem 2rem;
-    color: var(--color-text-secondary);
+    padding: var(--space-2xl) var(--space-lg);
+    color: var(--color-text-primary);
   }
 
   .blog-empty-state p {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
   }
 
   .empty-hint {
-    font-size: 0.9375rem;
+    font-size: var(--text-sm);
   }
 
   .empty-hint code {
@@ -65,20 +69,7 @@ const baseUrl = import.meta.env.BASE_URL;
 
   @media (max-width: 640px) {
     .blog-index-main {
-      padding: 2rem 1rem;
-    }
-
-    .blog-index-title {
-      font-size: 2.25rem;
-    }
-
-    .blog-index-description {
-      font-size: 1rem;
-    }
-
-    .blog-index-header {
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
+      padding: var(--space-xl) var(--space-md);
     }
   }
 </style>

@@ -40,11 +40,11 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
   author={author}
   tags={tags}
 >
-  <Header />
-  <main id="main-content" class="blog-post-main" transition:animate="fade">
+  <Header slot="header" />
+  <main id="main-content" class="blog-post-main" transition:animate="fade" role="article" aria-labelledby="post-title">
     <article class="blog-post">
       <header class="blog-post-header">
-        <h1 class="blog-post-title">{title}</h1>
+        <h1 id="post-title" class="blog-post-title">{title}</h1>
         <div class="blog-post-meta">
           <time datetime={pubDate.toISOString()} class="post-date">
             Publicado: {formattedPubDate}
@@ -57,7 +57,7 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
           <span class="post-author">Por {author}</span>
         </div>
         {tags.length > 0 && (
-          <div class="blog-post-tags">
+          <div class="blog-post-tags" aria-label="Etiquetas">
             {tags.map((tag) => (
               <span class="tag">{tag}</span>
             ))}
@@ -73,9 +73,9 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
 
 <style>
   .blog-post-main {
-    max-width: 880px;
+    max-width: var(--max-width-prose);
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: var(--space-2xl) var(--space-lg);
   }
 
   .blog-post {
@@ -83,43 +83,44 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
   }
 
   .blog-post-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: var(--border-width) solid var(--color-border);
   }
 
   .blog-post-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin: 0 0 1rem;
+    font-size: var(--text-6xl);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-md);
     color: var(--color-text-primary);
   }
 
   .blog-post-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
+    gap: var(--space-xl);
+    font-size: var(--text-base);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
   }
 
   .blog-post-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-xs);
   }
 
   .blog-post-content {
-    font-size: 1.0625rem;
-    line-height: 1.8;
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
   }
 
   .blog-post-content h2 {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border);
+    font-size: var(--text-4xl);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-md);
+    border-top: var(--border-width) solid var(--color-border);
   }
 
   .blog-post-content h2:first-child {
@@ -129,29 +130,31 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
   }
 
   .blog-post-content h3 {
-    margin-top: 2.5rem;
+    font-size: var(--text-2xl);
+    margin-top: var(--space-xl);
   }
 
   .blog-post-content p {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
   }
 
   .blog-post-content ul,
   .blog-post-content ol {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
+    padding-left: var(--space-lg);
   }
 
   .blog-post-content li {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-xs);
   }
 
   .blog-post-content blockquote {
-    margin: 2rem 0;
-    padding: 1.25rem 1.5rem;
+    margin: var(--space-xl) 0;
+    padding: var(--space-lg);
   }
 
   .blog-post-content pre {
-    margin: 2rem 0;
+    margin: var(--space-xl) 0;
   }
 
   .blog-post-content code {
@@ -159,33 +162,41 @@ const modifiedTime = updatedDate ? updatedDate.toISOString() : pubDate.toISOStri
   }
 
   .blog-post-content hr {
-    margin: 3rem 0;
+    margin: var(--space-2xl) 0;
   }
 
   .blog-post-content img {
-    margin: 2rem 0;
+    margin: var(--space-xl) 0;
   }
 
   .blog-post-content table {
-    margin: 2rem 0;
+    margin: var(--space-xl) 0;
   }
 
   @media (max-width: 640px) {
     .blog-post-main {
-      padding: 2rem 1rem;
+      padding: var(--space-xl) var(--space-md);
     }
 
     .blog-post-title {
-      font-size: 1.875rem;
+      font-size: var(--text-4xl);
     }
 
     .blog-post-meta {
-      gap: 1rem;
-      font-size: 0.875rem;
+      gap: var(--space-md);
+      font-size: var(--text-sm);
     }
 
     .blog-post-content {
-      font-size: 1rem;
+      font-size: var(--text-base);
+    }
+
+    .blog-post-content h2 {
+      font-size: var(--text-2xl);
+    }
+
+    .blog-post-content h3 {
+      font-size: var(--text-xl);
     }
   }
 </style>

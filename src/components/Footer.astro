@@ -1,42 +1,43 @@
 ---
 const baseUrl = import.meta.env.BASE_URL;
+const currentYear = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
   <p class="site-description">
     Blog personal minimalista sobre desarrollo, programación y tecnología.
   </p>
   <p class="copyright">
-    TheCodePapers
+    &copy; {currentYear} TheCodePapers. Todos los derechos reservados.
   </p>
 </footer>
 
 <style>
   .site-footer {
-    padding: 2rem;
-    border-top: 1px solid var(--color-border);
+    padding: var(--space-xl);
+    border-top: var(--border-width) solid var(--color-border);
     background-color: var(--color-bg-primary);
     text-align: center;
   }
 
   .site-description {
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
   }
 
   .copyright {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
   }
 
   @media (max-width: 640px) {
     .site-footer {
-      padding: 1.5rem 1rem;
+      padding: var(--space-lg) var(--space-md);
     }
 
     .site-description {
-      font-size: 0.875rem;
+      font-size: var(--text-xs);
     }
   }
 </style>
