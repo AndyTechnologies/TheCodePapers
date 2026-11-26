@@ -88,16 +88,22 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { data: workflow } = await github.rest.actions.getWorkflowByName({
+            // Listar workflows para encontrar "Deploy to GitHub Pages"
+            const { data: { workflows } } = await github.rest.actions.listRepoWorkflows({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Deploy to GitHub Pages'
             });
+            const deployWorkflow = workflows.find(w => w.name === 'Deploy to GitHub Pages');
+            if (!deployWorkflow) {
+              throw new Error('Workflow "Deploy to GitHub Pages" no encontrado');
+            }
+            // Disparar el workflow
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: workflow.id,
+              workflow_id: deployWorkflow.id,
               ref: 'main'
             });
+            console.log(`Deploy workflow disparado: ${deployWorkflow.name} (id: ${deployWorkflow.id})`);
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
